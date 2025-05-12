@@ -30,6 +30,44 @@ export async function userController(
       return sendJson(res, 200, user);
     }
 
+    if (method === "POST" && !userId) {
+      const body = await parseBody(req);
+      const { username, age, hobbies } = body;
+      if (!username || typeof age !== "number" || !Array.isArray(hobbies)) {
+        return sendJson(res, 400, { message: "Missing or invalid user data" });
+      }
+      const newUser = userService.create({ username, age, hobbies });
+      return sendJson(res, 201, newUser);
+    }
+
+    if (method === "PUT" && userId) {
+      if (!isValidUUID(userId))
+        return sendJson(res, 400, { message: "Invalid UUID" });
+      const user = userService.getById(userId);
+      if (!user) return sendJson(res, 404, { message: "User not found" });
+
+      const body = await parseBody(req);
+      const { username, age, hobbies } = body;
+      if (!username || typeof age !== "number" || !Array.isArray(hobbies)) {
+        return sendJson(res, 400, { message: "Missing or invalid user data" });
+      }
+
+      const updatedUser = userService.update(userId, {
+        username,
+        age,
+        hobbies,
+      });
+      return sendJson(res, 200, updatedUser);
+    }
+
+    if (method === "DELETE" && userId) {
+      if (!isValidUUID(userId))
+        return sendJson(res, 400, { message: "Invalid UUID" });
+      const deleted = userService.delete(userId);
+      if (!deleted) return sendJson(res, 404, { message: "User not found" });
+      res.writeHead(204);
+      return res.end();
+    }
 
     sendJson(res, 404, { message: "Endpoint not found" });
   } catch (err) {
