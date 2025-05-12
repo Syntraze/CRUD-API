@@ -1,8 +1,9 @@
 // service.ts
+import { users } from "./db";
 import { User } from "./utils/user.interface";
 import { randomUUID } from "crypto";
 
-const users: User[] = [];
+
 
 export const userService = {
   getAll: (): User[] => users,
