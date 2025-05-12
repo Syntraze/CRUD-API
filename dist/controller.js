@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userController = void 0;
+exports.userController = userController;
 const service_1 = require("./service");
 const utils_1 = require("./utils/utils");
 async function userController(req, res) {
@@ -65,4 +65,3 @@ async function userController(req, res) {
         (0, utils_1.sendJson)(res, 500, { message: "Internal server error" });
     }
 }
-exports.userController = userController;

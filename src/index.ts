@@ -1,7 +1,8 @@
 
 import * as http from "http";
 import { userController } from "./controller";
-
+import dotenv from "dotenv";
+dotenv.config();
 const server = http.createServer((req, res) => {
   if (req.url?.startsWith("/api/users")) {
     userController(req, res);
@@ -11,6 +12,6 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000");
+server.listen(process.env.PORT, () => {
+  console.log("Server is running on http://localhost:" + process.env.PORT);
 });

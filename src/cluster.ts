@@ -10,12 +10,11 @@ const workerPorts = Array.from({ length: numCPUs - 1 }, (_, i) => PORT + 1 + i);
 if (cluster.isPrimary) {
   let currentWorker = 0;
 
-  // Fork workers
+
   for (let i = 0; i < workerPorts.length; i++) {
     cluster.fork({ PORT: workerPorts[i] });
   }
 
-  // Load balancer on PORT
   const balancer = http.createServer((req, res) => {
     const targetPort = workerPorts[currentWorker];
     const proxy = http.request(

@@ -1,4 +1,4 @@
-// service.ts
+
 import { users } from "./db";
 import { User } from "./utils/user.interface";
 import { randomUUID } from "crypto";
